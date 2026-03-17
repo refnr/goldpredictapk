@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Android generated files
+android/.gradle/
+android/build/
+android/app/build/
+
+# Local / cache
+.local/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# APK / bundles
+*.apk
+*.aab
+
+# Large archive files
+*.zip
+attached_assets/*.zip
