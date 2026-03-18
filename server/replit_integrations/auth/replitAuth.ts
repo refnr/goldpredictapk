@@ -25,6 +25,8 @@ export function getSession() {
     tableName: "sessions",
   });
 
+  const isLocal = !!process.env.LOCALHOST_MODE;
+
   return session({
     secret: sessionSecret,
     store: sessionStore,
@@ -33,8 +35,8 @@ export function getSession() {
     proxy: true,
     cookie: {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: !isLocal,
+      sameSite: (isLocal ? "lax" : "none") as "lax" | "none",
       maxAge: sessionTtl,
     },
   });
