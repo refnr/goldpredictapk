@@ -37,6 +37,15 @@ function isCreatorBypass(email: string, password: string) {
   return isCreatorEmail(email) && password === CREATOR_PASSWORD;
 }
 
+async function saveSession(req: any): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    req.session.save((err: any) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+}
+
 async function ensureCreatorProAccess(userId: string) {
   await authStorage.updateUserSubscription(userId, {
     subscriptionPlan: "pro",
@@ -70,6 +79,7 @@ export function registerAuthRoutes(app: Express): void {
       }
 
       req.session.userId = user.id;
+      await saveSession(req);
 
       const freshUser = await authStorage.getUser(user.id);
 
@@ -110,6 +120,7 @@ export function registerAuthRoutes(app: Express): void {
         user = (await authStorage.getUser(user.id)) || user;
 
         req.session.userId = user.id;
+        await saveSession(req);
         return res.json(authStorage.getUserResponse(user));
       }
 
@@ -124,6 +135,7 @@ export function registerAuthRoutes(app: Express): void {
       }
 
       req.session.userId = user.id;
+      await saveSession(req);
       res.json(authStorage.getUserResponse(user));
     } catch (error) {
       if (error instanceof z.ZodError) {
