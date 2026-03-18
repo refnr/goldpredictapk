@@ -1,3 +1,4 @@
+import cors from "cors";
 import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import helmet from "helmet";
@@ -8,6 +9,18 @@ import { WebhookHandlers } from './services/webhookHandlers';
 
 const app = express();
 app.set("trust proxy", 1);
+
+app.use(
+  cors({
+    origin: [
+      "https://localhost",
+      "http://localhost",
+      "capacitor://localhost",
+      "https://goldpredictapk.onrender.com",
+    ],
+    credentials: true,
+  })
+);
 
 app.use(helmet({
   contentSecurityPolicy: false,
