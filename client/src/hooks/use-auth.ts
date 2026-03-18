@@ -3,7 +3,9 @@ import type { UserResponse, LoginInput, RegisterInput, UpdateProfileInput } from
 import { apiRequest } from "@/lib/queryClient";
 
 async function fetchUser(): Promise<UserResponse | null> {
-  const response = await fetch("/api/auth/user", {
+  const API_BASE = (import.meta.env.VITE_API_URL as string) || "";
+
+  const response = await fetch(`${API_BASE}/api/auth/user`, {
     credentials: "include",
   });
 

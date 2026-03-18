@@ -32,7 +32,7 @@ export function getSession() {
     cookie: {
       httpOnly: true,
       secure: !process.env.LOCALHOST_MODE,
-      sameSite: "lax" as const,
+      sameSite: (process.env.LOCALHOST_MODE ? "lax" : "none") as "lax" | "none",
       maxAge: sessionTtl,
     },
   });
