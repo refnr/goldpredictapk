@@ -1,47 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import type { UserResponse, LoginInput, RegisterInput, UpdateProfileInput } from "@shared/models/auth";
-import { apiRequest } from "@/lib/queryClient";
-
-async function fetchUser(): Promise<UserResponse | null> {
-  const API_BASE = (import.meta.env.VITE_API_URL as string) || "";
-
-  const response = await fetch(`${API_BASE}/api/auth/user`, {
-    credentials: "include",
-  });
-
-  if (response.status === 401) {
-    return null;
-  }
-
-  if (!response.ok) {
-    throw new Error(`${response.status}: ${response.statusText}`);
-  }
-
-  return response.json();
-}
-  const API_BASE = (import.meta.env.VITE_API_URL as string) || "";
-
-  const response = await fetch(`${API_BASE}/api/auth/user`, {
-    credentials: "include",
-  });
-
-  if (response.status === 401) {
-    return null;
-  }
-
-  if (!response.ok) {
-    throw new Error(`${response.status}: ${response.statusText}`);
-  }
-
-  return response.json();
-}
+import type {
+  UserResponse,
+  LoginInput,
+  RegisterInput,
+  UpdateProfileInput,
+} from "@shared/models/auth";
+import { apiRequest, getQueryFn } from "@/lib/queryClient";
 
 export function useAuth() {
   const queryClient = useQueryClient();
-  
+
   const { data: user, isLoading } = useQuery<UserResponse | null>({
     queryKey: ["/api/auth/user"],
-    queryFn: fetchUser,
+    queryFn: getQueryFn<UserResponse | null>({ on401: "returnNull" }),
     retry: false,
     staleTime: 1000 * 60 * 5,
   });
