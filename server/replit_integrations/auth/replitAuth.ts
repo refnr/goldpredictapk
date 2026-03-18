@@ -15,7 +15,7 @@ export function getSession() {
   if (!sessionSecret) {
     throw new Error("SESSION_SECRET environment variable is required for secure session management");
   }
-  
+
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
   const pgStore = connectPg(session);
   const sessionStore = new pgStore({
@@ -24,11 +24,13 @@ export function getSession() {
     ttl: sessionTtl,
     tableName: "sessions",
   });
+
   return session({
     secret: sessionSecret,
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
       httpOnly: true,
       secure: !process.env.LOCALHOST_MODE,

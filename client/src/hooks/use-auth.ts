@@ -19,6 +19,22 @@ async function fetchUser(): Promise<UserResponse | null> {
 
   return response.json();
 }
+  const API_BASE = (import.meta.env.VITE_API_URL as string) || "";
+
+  const response = await fetch(`${API_BASE}/api/auth/user`, {
+    credentials: "include",
+  });
+
+  if (response.status === 401) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error(`${response.status}: ${response.statusText}`);
+  }
+
+  return response.json();
+}
 
 export function useAuth() {
   const queryClient = useQueryClient();
