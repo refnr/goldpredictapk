@@ -23,6 +23,14 @@ const config: CapacitorConfig = {
       style: 'Dark',
       backgroundColor: '#0a0a0a',
     },
+
+    // ✅ QUESTI SONO I FIX IMPORTANTI
+    CapacitorCookies: {
+      enabled: true,
+    },
+    CapacitorHttp: {
+      enabled: true,
+    },
   },
 };
 
