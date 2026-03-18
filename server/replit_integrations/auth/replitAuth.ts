@@ -33,8 +33,8 @@ export function getSession() {
     proxy: true,
     cookie: {
       httpOnly: true,
-      secure: !process.env.LOCALHOST_MODE,
-      sameSite: (process.env.LOCALHOST_MODE ? "lax" : "none") as "lax" | "none",
+      secure: false,
+      sameSite: "lax",
       maxAge: sessionTtl,
     },
   });
